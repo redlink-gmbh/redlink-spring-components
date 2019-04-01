@@ -1,0 +1,40 @@
+language: java
+
+jdk:
+  - oraclejdk8
+
+services:
+  - docker
+
+script: mvn -B clean test
+
+jobs:
+  include:
+    - stage: sonarcloud
+      git:
+        depth: false
+      jdk: openjdk8
+      script:
+        - SONAR_PARAMS="";
+          if [ "${TRAVIS_PULL_REQUEST:-false}" != "false" ]; then
+            SONAR_PARAMS="$SONAR_PARAMS -Dsonar.pullrequest.key=${TRAVIS_PULL_REQUEST}";
+            SONAR_PARAMS="$SONAR_PARAMS -Dsonar.pullrequest.branch=${TRAVIS_PULL_REQUEST_BRANCH}";
+            SONAR_PARAMS="$SONAR_PARAMS -Dsonar.pullrequest.base=${TRAVIS_BRANCH}";
+            SONAR_PARAMS="$SONAR_PARAMS -Dsonar.pullrequest.provider=github";
+            SONAR_PARAMS="$SONAR_PARAMS -Dsonar.pullrequest.github.repository=${TRAVIS_REPO_SLUG}";
+          else
+            if  [ -z "$TRAVIS_TAG" -a "${TRAVIS_BRANCH:-master}" != "master" ]; then
+              SONAR_PARAMS="$SONAR_PARAMS -Dsonar.branch.name=${TRAVIS_BRANCH}";
+              if  [ -z "$TRAVIS_TAG" -a "${TRAVIS_BRANCH:-develop}" != "develop" ]; then
+                SONAR_PARAMS="$SONAR_PARAMS -Dsonar.branch.target=master";
+              fi;
+            fi;
+          fi;
+        - echo "$SONAR_PARAMS"
+        - mvn -B verify
+          -Dsonar.login="${SONAR_TOKEN}"
+          $SONAR_PARAMS
+
+cache:
+  directories:
+    - $HOME/.m2
