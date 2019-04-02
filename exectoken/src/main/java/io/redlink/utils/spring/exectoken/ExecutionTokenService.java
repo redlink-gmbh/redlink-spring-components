@@ -37,7 +37,8 @@ public class ExecutionTokenService {
         if(name == null || name.length() < 1){
             throw new IllegalArgumentException("The parsed name MUST NOT be NULL nor blank!");
         }
-        return new ExecutionToken(lockRepo, ExecutionToken.DEFAULT_EXPIRE_DURATION, lockRepo.obtain(name, ExecutionToken.DEFAULT_EXPIRE_DURATION));
+        return new ExecutionToken(lockRepo, ExecutionToken.DEFAULT_EXPIRE_DURATION, 
+                lockRepo.obtain(name, ExecutionToken.DEFAULT_EXPIRE_DURATION));
     }
     
     public ExecutionToken obtain(String name, Duration expireDuration) throws ExecutionLockedException {

@@ -82,7 +82,9 @@
         <project.build.sourceEncoding>utf8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
 
-        <!-- <spring.boot.version>2.1.3.RELEASE</spring.boot.version>  -->
+        <!-- 
+            TODO: how to specify a version Range ~ also works with 2.1.3.RELEASE
+          -->
         <spring.boot.version>1.5.19.RELEASE</spring.boot.version>
         
         <java.version>1.8</java.version>

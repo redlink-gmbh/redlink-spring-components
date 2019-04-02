@@ -44,6 +44,7 @@ public class ExecTokenRepositoryImpl implements ExecTokenRepositoryCustom {
     }
 
     @Override
+    @SuppressWarnings("squid:S2583")
     public Token obtain(String name, Duration expireDuration) throws ExecutionLockedException {
         if(name == null || name.length() < 1){
             throw new IllegalArgumentException("The parsed name MUST NOT be NULL nor blank!");
@@ -70,7 +71,8 @@ public class ExecTokenRepositoryImpl implements ExecTokenRepositoryCustom {
         } else if(result instanceof UpdateResult) { //spring-data-mongodb 2+
             upsertedId = ((UpdateResult)result).getUpsertedId();
         } else {
-            throw new IllegalStateException("Unexpected return type of Upsert Request (type: " + result.getClass().getName() + ")!"); 
+            throw new IllegalStateException("Unexpected return type of Upsert Request (type: " 
+                    + result.getClass().getName() + ")!"); 
         }
         if(upsertedId != null){
             return mongoTemplate.findById(upsertedId, Token.class);
@@ -106,7 +108,8 @@ public class ExecTokenRepositoryImpl implements ExecTokenRepositoryCustom {
         } else if(result instanceof DeleteResult) { //spring-data-mongodb 2+
             return ((DeleteResult)result).getDeletedCount() > 0;
         } else {
-            throw new IllegalStateException("Unexpected return type of Upsert Request (type: " + result.getClass().getName() + ")!"); 
+            throw new IllegalStateException("Unexpected return type of Upsert Request (type: " 
+                    + result.getClass().getName() + ")!"); 
         }
     }
 

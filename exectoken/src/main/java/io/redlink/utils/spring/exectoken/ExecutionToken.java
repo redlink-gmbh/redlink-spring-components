@@ -22,8 +22,6 @@ import java.util.Map;
 
 import org.bson.types.ObjectId;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import io.redlink.utils.spring.exectoken.repo.ExecTokenRepository;
 import io.redlink.utils.spring.exectoken.repo.Token;
 
@@ -34,13 +32,10 @@ public final class ExecutionToken implements AutoCloseable {
      */
     public static final Duration DEFAULT_EXPIRE_DURATION = Duration.ofMinutes(5);
     
-    @JsonIgnore
     private Token lockToken;
     
-    @JsonIgnore
     private final Duration expireDuration;
 
-    @JsonIgnore
     private final ExecTokenRepository lockRepo;
     
     private boolean releaseOnClose = true;

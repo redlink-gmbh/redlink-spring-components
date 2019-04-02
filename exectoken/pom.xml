@@ -34,13 +34,6 @@
   </description>
 
     <build>
-<!--        <finalName>redlink-${project.artifactId}-${project.version}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-        </plugins> -->
     </build>
 
     <dependencies>
@@ -49,10 +42,6 @@
         <artifactId>spring-data-mongodb</artifactId>
         <!-- works with versions [1.9,2] -->
         <scope>provided</scope>
-      </dependency>
-	  <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
       </dependency>
 
       <dependency>
@@ -79,6 +68,10 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
       </dependency>
     </dependencies>
 

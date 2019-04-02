@@ -63,6 +63,16 @@ public class ExecTokenServiceTest {
     @Autowired
     private ExecutionTokenService etService;
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testTokenNameNull() throws Exception {
+        etService.obtain(null, Duration.ofSeconds(1));
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testTokenNameEmpty() throws Exception {
+        etService.obtain("", Duration.ofSeconds(1));
+    }
+
     @Test
     public void testSimpleExecToken() throws Exception{
         try (ExecutionToken et = etService.obtain("test")){
@@ -70,6 +80,7 @@ public class ExecTokenServiceTest {
         }
         Assert.assertFalse(etService.isLocked("test"));
     }
+    
     @Test
     public void testLockout() throws Exception{
         try (ExecutionToken et = etService.obtain("test", Duration.ofSeconds(1))){
@@ -92,6 +103,16 @@ public class ExecTokenServiceTest {
         //now assert
         Assert.assertFalse(etService.isLocked("test"));
     }
+    
+    @Test(expected=ExecutionLockedException.class)
+    public void testLocked() throws Exception {
+        try (ExecutionToken et = etService.obtain("test", Duration.ofSeconds(1))){
+            et.setReleaseOnClose(false);
+            assertExecutionToken(et, "test");
+        }
+        etService.obtain("test", Duration.ofSeconds(1));
+    }
+    
     @Test
     public void testRenew() throws Exception{
         try (ExecutionToken et = etService.obtain("test", Duration.ofSeconds(1))){
